@@ -10,6 +10,41 @@ void setup() {
   Serial.begin(115200);  // Inicia la comunicació per Serial (USB)
   SerialBT.begin("ESP32test"); // Defineix el nom Bluetooth del dispositiu
   Serial.println("Starting BLE application");
+
+   // Create the BLE Server
+  pServer = BLEDevice::createServer();
+  pServer->setCallbacks(new MyServerCallbacks());
+
+  // Create the BLE Service
+  BLEService *pService = pServer->createService(SERVICE_UUID);
+
+  // Create a BLE Characteristic
+  pCharacteristic = pService->createCharacteristic(
+                      CHARACTERISTIC_UUID,
+                      BLECharacteristic::PROPERTY_READ   |
+                      BLECharacteristic::PROPERTY_WRITE  |
+                      BLECharacteristic::PROPERTY_NOTIFY |
+                      BLECharacteristic::PROPERTY_INDICATE
+                    );
+
+  // Add the descriptor for notifications
+  pCharacteristic->addDescriptor(new BLE2902());
+  
+  // Set callback to handle write events
+  pCharacteristic->setCallbacks(new CharacteristicCallbacks());
+
+  // Start the service
+  pService->start();
+
+  // Start advertising
+  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+  pAdvertising->addServiceUUID(SERVICE_UUID);
+  pAdvertising->setScanResponse(true);
+  pAdvertising->setMinPreferred(0x06);  // helps with iPhone connections issue
+  pAdvertising->setMinPreferred(0x12);
+  BLEDevice::startAdvertising();
+
+  Serial.println("BLE service started. Waiting for a client connection...");
 }
 
 void loop() {
