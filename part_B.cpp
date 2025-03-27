@@ -9,7 +9,7 @@ BluetoothSerial SerialBT;
 void setup() {
   Serial.begin(115200);  // Inicia la comunicació per Serial (USB)
   SerialBT.begin("ESP32test"); // Defineix el nom Bluetooth del dispositiu
-  Serial.println("The device started, now you can pair it with Bluetooth!");
+  Serial.println("Starting BLE application");
 }
 
 void loop() {
