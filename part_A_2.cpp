@@ -3,8 +3,8 @@
 #include <SPIFFS.h>
 
 // SSID & Password
-const char* ssid = "*****";      // Introduïu el vostre SSID aquí
-const char* password = "*****";  // Introduïu la vostra contrasenya aquí
+const char* ssid = "MOVISTAR_3FBD";      // Introduïu el vostre SSID aquí
+const char* password = "7SUXheaU4nsA8H27j7ny";  // Introduïu la vostra contrasenya aquí
 
 WebServer server(80);  // Objecte del servidor web al port 80
 
